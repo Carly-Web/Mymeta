@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Cash Flow</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Pantalla de inicio de sesión -->
+    <div id="loginScreen" class="login-screen">
+        <h2>Iniciar sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Nombre de usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <!-- Contenido de la aplicación (se oculta hasta iniciar sesión) -->
+    <div id="appContent" class="app-content" style="display: none;">
+        <div class="container">
+            <h1>Gestor de Cash Flow</h1>
+
+            <div>
+                <h2>Total Balance: <span id="totalBalance">0.00</span></h2>
+                <h3>Ingresos: <span id="totalIncome">0.00</span></h3>
+                <h3>Gastos: <span id="totalExpenses">0.00</span></h3>
+            </div>
+
+            <div>
+                <h3>Agregar Transacción</h3>
+                <input type="date" id="date" />
+                <input type="text" id="description" placeholder="Descripción" />
+                <input type="number" id="amount" placeholder="Monto" />
+                <select id="category">
+                    <option value="income">Ingreso</option>
+                    <option value="expense">Gasto</option>
+                </select>
+                <button onclick="addTransaction()">Agregar Transacción</button>
+            </div>
+
+            <div>
+                <h3>Transacciones</h3>
+                <ul id="transactionList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
