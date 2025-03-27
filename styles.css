@@ -1,119 +1,267 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Global */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #F7F9FC;
+  color: #333;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
+/* Pantalla de Login */
 .login-screen {
-    text-align: center;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #4CAF50, #8BC34A);
+  padding: 20px;
 }
 
-.login-screen input {
-    margin: 10px;
-    padding: 10px;
-    font-size: 16px;
+.login-screen h2 {
+  font-size: 2.5em;
+  color: #fff;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
-.login-screen button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
+.login-screen form {
+  width: 100%;
+  max-width: 350px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.login-screen button:hover {
-    background-color: #0056b3;
+.login-screen form input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-screen form button {
+  padding: 12px;
+  background: linear-gradient(45deg, #04c800, #ffea00);
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.login-screen form button:hover {
+  transform: scale(1.03);
 }
 
 .error-message {
-    color: red;
-    font-size: 14px;
+  color: #ff5252;
+  font-weight: bold;
+  text-align: center;
 }
 
+/* App Content */
 .app-content {
-    display: none;
+  background: #f0f4f8;
+  min-height: 100vh;
 }
 
+/* Header y Navegación */
 header {
-    text-align: center;
-    margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-bottom: 2px solid #ddd;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 header h1 {
-    font-size: 2rem;
-    color: #007bff;
+  font-size: 1.8em;
+  color: #4CAF50;
 }
 
-.subheading {
-    font-size: 1rem;
-    color: #888;
+nav button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  background: #8BC34A;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.form-section, .transactions {
-    margin-bottom: 40px;
+nav button:hover {
+  background: #689f38;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Secciones */
+.section {
+  display: none;
+  background: #fff;
+  margin: 20px auto;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 800px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-input, select, button {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.section.active {
+  display: block;
 }
 
-button {
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    border: none;
+/* Contenedor del gráfico para limitar su tamaño */
+.chart-container {
+  position: relative;
+  height: 300px; 
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-button:hover {
-    background-color: #218838;
+/* Formularios de transacciones */
+.transaction-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-.transactions h2 {
-    font-size: 1.5rem;
-    color: #007bff;
+.transaction-form input,
+.transaction-form select,
+.transaction-form button {
+  flex: 1 1 180px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.transaction {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    margin-top: 10px;
-    border-radius: 4px;
+.transaction-form button {
+  background: linear-gradient(45deg, #04c800, #ffea00);
+  border: none;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: transform 0.3s;
 }
 
-.income {
-    color: green;
+.transaction-form button:hover {
+  transform: scale(1.03);
 }
 
-.expense {
-    color: red;
+/* Listado de transacciones */
+.transaction-list .transaction-item {
+  padding: 10px;
+  margin: 5px 0;
+  background: #f9f9f9;
+  border-left: 5px solid #4CAF50;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transaction-list .transaction-item button {
+  background: #dc3545;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.transaction-list .transaction-item button:hover {
+  background: #c82333;
+}
+
+/* Sección Cursos */
+#cursos ul {
+  list-style: none;
+  padding: 0;
+}
+
+#cursos li {
+  background: #e0f2f1;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Sección Ajustes */
+#ajustes label, #ajustes select, #ajustes input {
+  margin: 5px;
+  font-size: 1em;
+}
+
+/* Modo Oscuro */
+.dark-mode {
+  background: #333;
+  color: #f0f4f8;
+}
+
+.dark-mode header {
+  background: #444;
+  border-bottom: 2px solid #555;
+}
+
+.dark-mode .section {
+  background: #444;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.dark-mode .login-screen form {
+  background: #555;
+  color: #fff;
+}
+
+.dark-mode .login-screen form input {
+  background: #666;
+  color: #fff;
+  border: 1px solid #777;
+}
+
+.dark-mode .login-screen form button {
+  background: linear-gradient(45deg, #4CAF50, #FFC107);
+  color: #333;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  nav button {
+    font-size: 0.9em;
+    padding: 8px 10px;
+  }
+  
+  .section {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .chart-container {
+    height: 250px;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  header, .login-screen form {
+    padding: 10px;
+  }
+  
+  .transaction-form input,
+  .transaction-form select,
+  .transaction-form button {
+    flex: 1 1 100%;
+  }
 }

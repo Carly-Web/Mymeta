@@ -1,84 +1,198 @@
-// Datos de inicio de sesión (puedes cambiar estos para un sistema más avanzado)
+// ------------------ LOGIN ------------------ //
 const correctUsername = 'usuario';
 const correctPassword = 'contraseña';
 
-// Mostrar el formulario de inicio de sesión y ocultar la aplicación
 document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+  event.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    // Validar usuario y contraseña
-    if (username === correctUsername && password === correctPassword) {
-        // Si el inicio de sesión es correcto, mostrar la aplicación
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appContent').style.display = 'block';
-    } else {
-        // Si los datos son incorrectos, mostrar un mensaje de error
-        document.getElementById('errorMessage').textContent = 'Usuario o contraseña incorrectos.';
-    }
+  if (username === correctUsername && password === correctPassword) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+  } else {
+    document.getElementById('errorMessage').textContent = 'Usuario o contraseña incorrectos.';
+  }
 });
 
-// Funciones de la aplicación (igual que antes)
+// ------------------ CAMBIO DE SECCIONES ------------------ //
+function showSection(sectionId) {
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(sec => {
+    sec.classList.remove('active');
+    sec.classList.add('hidden');
+  });
+  const activeSection = document.getElementById(sectionId);
+  activeSection.classList.remove('hidden');
+  activeSection.classList.add('active');
+}
 
+// ------------------ GESTIÓN DE TRANSACCIONES ------------------ //
+// Se guardarán todas las transacciones (ingresos, gastos y ahorros)
 let transactions = [];
 
-function addTransaction() {
-    const date = document.getElementById('date').value;
-    const description = document.getElementById('description').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    const category = document.getElementById('category').value;
-
-    if (!date || !description || isNaN(amount)) {
-        alert("Por favor, llena todos los campos correctamente.");
-        return;
-    }
-
-    const newTransaction = { date, description, amount, category };
-    transactions.push(newTransaction);
-    updateUI();
-
-    document.getElementById('date').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('amount').value = '';
-    document.getElementById('category').value = 'income';
-}
-
+// Actualiza la interfaz
 function updateUI() {
-    let totalBalance = 0;
-    let totalIncome = 0;
-    let totalExpenses = 0;
-
-    transactions.forEach(transaction => {
-        totalBalance += transaction.amount;
-        if (transaction.amount > 0) {
-            totalIncome += transaction.amount;
-        } else {
-            totalExpenses += transaction.amount;
-        }
-    });
-
-    document.getElementById('totalBalance').textContent = totalBalance.toFixed(2);
-    document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
-    document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
-
-    const transactionList = document.getElementById('transactionList');
-    transactionList.innerHTML = '';
-
-    transactions.forEach((transaction, index) => {
-        const li = document.createElement('li');
-        li.classList.add('transaction');
-        li.classList.add(transaction.category === 'income' ? 'income' : 'expense');
-        li.innerHTML = `
-            <span>${transaction.date} - ${transaction.description} - $${Math.abs(transaction.amount).toFixed(2)} (${transaction.category})</span>
-            <button onclick="deleteTransaction(${index})">Eliminar</button>
-        `;
-        transactionList.appendChild(li);
-    });
+  let totalIncome = 0;
+  let totalExpenses = 0;
+  let totalSavings = 0;
+  
+  transactions.forEach(tx => {
+    if (tx.category === 'income') {
+      totalIncome += tx.amount;
+    } else if (tx.category === 'expense') {
+      totalExpenses += tx.amount;
+    } else if (tx.category === 'savings') {
+      totalSavings += tx.amount;
+    }
+  });
+  
+  // Suponemos que el balance disponible es ingresos - gastos - ahorros
+  const totalBalance = totalIncome - totalExpenses - totalSavings;
+  
+  document.getElementById('totalBalance').textContent = totalBalance.toFixed(2);
+  document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
+  document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+  document.getElementById('totalSavings').textContent = totalSavings.toFixed(2);
+  
+  updateTransactionList('ingresos', transactions.filter(tx => tx.category === 'income'));
+  updateTransactionList('gastos', transactions.filter(tx => tx.category === 'expense'));
+  updateTransactionList('ahorros', transactions.filter(tx => tx.category === 'savings'));
+  
+  updateChart(totalIncome, totalExpenses, totalSavings);
 }
 
-function deleteTransaction(index) {
-    transactions.splice(index, 1);
+// Actualiza la lista para cada tipo de transacción
+function updateTransactionList(section, list) {
+  const container = document.getElementById(`${section}-lista`);
+  container.innerHTML = '';
+  list.forEach((tx, index) => {
+    const item = document.createElement('div');
+    item.className = 'transaction-item';
+    item.innerHTML = `
+      <span>${tx.date} - ${tx.description} - $${Math.abs(tx.amount).toFixed(2)}</span>
+      <button onclick="deleteTransaction('${section}', ${index})">Eliminar</button>
+    `;
+    container.appendChild(item);
+  });
+}
+
+// Agrega una nueva transacción
+function addTransaction(category, date, description, amount) {
+  const tx = { category, date, description, amount };
+  transactions.push(tx);
+  updateUI();
+}
+
+// Se elimina una transacción
+function deleteTransaction(section, indexInSection) {
+  const filtered = transactions.filter(tx =>
+    tx.category === (section === 'ingresos' ? 'income' : section === 'gastos' ? 'expense' : 'savings')
+  );
+  const txToDelete = filtered[indexInSection];
+  const globalIndex = transactions.findIndex(tx => tx === txToDelete);
+  if (globalIndex > -1) {
+    transactions.splice(globalIndex, 1);
     updateUI();
+  }
+}
+
+// ------------------ EVENTOS DE LOS FORMULARIOS ------------------ //
+// Ingresos
+document.getElementById('incomeForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const date = document.getElementById('incomeDate').value;
+  const description = document.getElementById('incomeDescription').value;
+  const amount = parseFloat(document.getElementById('incomeAmount').value);
+  
+  if (!date || !description || isNaN(amount)) {
+    alert("Por favor, completa todos los campos correctamente.");
+    return;
+  }
+  addTransaction('income', date, description, Math.abs(amount));
+  e.target.reset();
+});
+
+// Gastos
+document.getElementById('expenseForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const date = document.getElementById('expenseDate').value;
+  const description = document.getElementById('expenseDescription').value;
+  const amount = parseFloat(document.getElementById('expenseAmount').value);
+  
+  if (!date || !description || isNaN(amount)) {
+    alert("Por favor, completa todos los campos correctamente.");
+    return;
+  }
+  addTransaction('expense', date, description, Math.abs(amount));
+  e.target.reset();
+});
+
+// Ahorros
+document.getElementById('savingsForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const date = document.getElementById('savingsDate').value;
+  const description = document.getElementById('savingsDescription').value;
+  const amount = parseFloat(document.getElementById('savingsAmount').value);
+  
+  if (!date || !description || isNaN(amount)) {
+    alert("Por favor, completa todos los campos correctamente.");
+    return;
+  }
+  addTransaction('savings', date, description, Math.abs(amount));
+  e.target.reset();
+});
+
+// ------------------ GRÁFICO CON CHART.JS ------------------ //
+let balanceChart;
+function updateChart(income, expenses, savings) {
+  const ctx = document.getElementById('balanceChart').getContext('2d');
+  const data = {
+    labels: ['Ingresos', 'Gastos', 'Ahorros'],
+    datasets: [{
+      data: [income, expenses, savings],
+      backgroundColor: ['#28a745', '#dc3545', '#ffc107']
+    }]
+  };
+
+  if (balanceChart) {
+    balanceChart.data = data;
+    balanceChart.update();
+  } else {
+    balanceChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+}
+
+// ------------------ SIMULACIÓN DE PRÉSTAMOS ------------------ //
+document.getElementById('calcularPrestamoButton').addEventListener('click', function() {
+  const monto = parseFloat(document.getElementById('sim_monto').value);
+  const interes = parseFloat(document.getElementById('sim_interes').value);
+  const meses = parseFloat(document.getElementById('sim_meses').value);
+  const resultadoEl = document.getElementById('resultadoSimulacion');
+
+  if (isNaN(monto) || isNaN(interes) || isNaN(meses) || meses === 0) {
+    resultadoEl.textContent = "Por favor ingresa valores válidos en todos los campos.";
+    return;
+  }
+  const tasa = (interes / 100) / 12;
+  const cuota = (monto * tasa) / (1 - Math.pow(1 + tasa, -meses));
+  resultadoEl.textContent = `La cuota mensual es $${cuota.toFixed(2)}`;
+});
+
+// ------------------ AJUSTES ------------------ //
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+}
+
+function cambiarIdioma() {
+  const idioma = document.getElementById('idioma').value;
+  console.log("Idioma seleccionado: ", idioma);
 }

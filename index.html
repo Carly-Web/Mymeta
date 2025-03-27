@@ -1,53 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Cash Flow</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Cash Flow</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Pantalla de inicio de sesión -->
-    <div id="loginScreen" class="login-screen">
-        <h2>Iniciar sesión</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Nombre de usuario" required>
-            <input type="password" id="password" placeholder="Contraseña" required>
-            <button type="submit">Iniciar sesión</button>
-        </form>
-        <p id="errorMessage" class="error-message"></p>
-    </div>
+  <!-- Pantalla de inicio de sesión -->
+  <div id="loginScreen" class="login-screen">
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Nombre de usuario" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <p id="errorMessage" class="error-message"></p>
+  </div>
 
-    <!-- Contenido de la aplicación (se oculta hasta iniciar sesión) -->
-    <div id="appContent" class="app-content" style="display: none;">
-        <div class="container">
-            <h1>Gestor de Cash Flow</h1>
-
-            <div>
-                <h2>Total Balance: <span id="totalBalance">0.00</span></h2>
-                <h3>Ingresos: <span id="totalIncome">0.00</span></h3>
-                <h3>Gastos: <span id="totalExpenses">0.00</span></h3>
-            </div>
-
-            <div>
-                <h3>Agregar Transacción</h3>
-                <input type="date" id="date" />
-                <input type="text" id="description" placeholder="Descripción" />
-                <input type="number" id="amount" placeholder="Monto" />
-                <select id="category">
-                    <option value="income">Ingreso</option>
-                    <option value="expense">Gasto</option>
-                </select>
-                <button onclick="addTransaction()">Agregar Transacción</button>
-            </div>
-
-            <div>
-                <h3>Transacciones</h3>
-                <ul id="transactionList"></ul>
-            </div>
+  <!-- Contenido principal (oculto por defecto) -->
+  <div id="appContent" class="app-content" style="display: none;">
+    <header>
+      <h1>Biemvenido a Cash Flow</h1>
+      <nav>
+        <button onclick="showSection('balance')">Balance</button>
+        <button onclick="showSection('ingresos')">Ingresos</button>
+        <button onclick="showSection('gastos')">Gastos</button>
+        <button onclick="showSection('ahorros')">Ahorros</button>
+        <button onclick="showSection('simulacion')">Simulación</button>
+        <button onclick="showSection('cursos')">Cursos</button>
+        <button onclick="showSection('ajustes')">Ajustes</button>
+      </nav>
+    </header>
+    <main>
+      <!-- Sección Balance -->
+      <section id="balance" class="section active">
+        <h2>Balance General</h2>
+        <p>Total Balance: $<span id="totalBalance">0.00</span></p>
+        <p>Ingresos: $<span id="totalIncome">0.00</span></p>
+        <p>Gastos: $<span id="totalExpenses">0.00</span></p>
+        <p>Ahorros: $<span id="totalSavings">0.00</span></p>
+        <div class="chart-container">
+          <canvas id="balanceChart"></canvas>
         </div>
-    </div>
+      </section>
 
-    <script src="script.js"></script>
+      <!-- Sección Ingresos -->
+      <section id="ingresos" class="section hidden">
+        <h2>Ingresos</h2>
+        <form id="incomeForm" class="transaction-form">
+          <input type="date" id="incomeDate" required>
+          <input type="text" id="incomeDescription" placeholder="Descripción" required>
+          <input type="number" id="incomeAmount" placeholder="Monto" step="0.01" required>
+          <button type="submit">Agregar Ingreso</button>
+        </form>
+        <div id="ingresos-lista" class="transaction-list"></div>
+      </section>
+
+      <!-- Sección Gastos -->
+      <section id="gastos" class="section hidden">
+        <h2>Gastos</h2>
+        <form id="expenseForm" class="transaction-form">
+          <input type="date" id="expenseDate" required>
+          <input type="text" id="expenseDescription" placeholder="Descripción" required>
+          <input type="number" id="expenseAmount" placeholder="Monto" step="0.01" required>
+          <button type="submit">Agregar Gasto</button>
+        </form>
+        <div id="gastos-lista" class="transaction-list"></div>
+      </section>
+
+      <!-- Sección Ahorros -->
+      <section id="ahorros" class="section hidden">
+        <h2>Ahorros</h2>
+        <form id="savingsForm" class="transaction-form">
+          <input type="date" id="savingsDate" required>
+          <input type="text" id="savingsDescription" placeholder="Descripción" required>
+          <input type="number" id="savingsAmount" placeholder="Monto" step="0.01" required>
+          <button type="submit">Agregar Ahorro</button>
+        </form>
+        <div id="ahorros-lista" class="transaction-list"></div>
+      </section>
+
+      <!-- Sección Simulación de Préstamos -->
+      <section id="simulacion" class="section hidden">
+        <h2>Simulación de Préstamos</h2>
+        <input type="number" id="sim_monto" placeholder="Monto del préstamo" required>
+        <input type="number" id="sim_interes" placeholder="Tasa de interés (%)" required>
+        <input type="number" id="sim_meses" placeholder="Plazo en meses" required>
+        <button id="calcularPrestamoButton" type="button">Calcular</button>
+        <p id="resultadoSimulacion"></p>
+      </section>
+      
+      <!-- Sección Cursos -->
+      <section id="cursos" class="section hidden">
+        <h2>Cursos de Finanzas</h2>
+        <ul>
+          <li>Curso 1: Introducción a las Finanzas</li>
+          <li>Curso 2: Estrategias de Inversión</li>
+          <li>Curso 3: Planificación Financiera Personal</li>
+        </ul>
+      </section>
+
+      <!-- Sección Ajustes -->
+      <section id="ajustes" class="section hidden">
+        <h2>Ajustes</h2>
+        <label for="modo">Modo Oscuro:</label>
+        <input type="checkbox" id="modo" onclick="toggleDarkMode()">
+        <label for="idioma">Idioma:</label>
+        <select id="idioma" onchange="cambiarIdioma()">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
