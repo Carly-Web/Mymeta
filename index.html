@@ -19,11 +19,16 @@
     <p id="errorMessage" class="error-message"></p>
   </div>
 
-  <!-- Contenido principal (oculto por defecto) -->
-  <div id="appContent" class="app-content" style="display: none;">
-    <header>
-      <h1>Biemvenido a Cash Flow</h1>
-      <nav>
+ <!-- Contenido principal (oculto por defecto) -->
+<div id="appContent" class="app-content" style="display: none;">
+  <header>
+    <h1>Bienvenido a MyMeta$</h1>
+    <nav>
+      <!-- Botón del menú hamburguesa -->
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+      
+      <!-- Menú desplegable -->
+      <div id="menu" class="menu">
         <button onclick="showSection('balance')">Balance</button>
         <button onclick="showSection('ingresos')">Ingresos</button>
         <button onclick="showSection('gastos')">Gastos</button>
@@ -31,9 +36,10 @@
         <button onclick="showSection('simulacion')">Simulación</button>
         <button onclick="showSection('cursos')">Cursos</button>
         <button onclick="showSection('ajustes')">Ajustes</button>
-      </nav>
-    </header>
-    <main>
+      </div>
+    </nav>
+  </header>
+  <main>
       <!-- Sección Balance -->
       <section id="balance" class="section active">
         <h2>Balance General</h2>

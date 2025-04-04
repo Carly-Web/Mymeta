@@ -15,7 +15,12 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
   }
 });
 
-// ------------------ CAMBIO DE SECCIONES ------------------ //
+// ------------------ NAVEGACIÓN ------------------ //
+function toggleMenu() {
+  const menu = document.getElementById('menu');
+  menu.classList.toggle('active');
+}
+
 function showSection(sectionId) {
   const sections = document.querySelectorAll('.section');
   sections.forEach(sec => {
@@ -26,6 +31,33 @@ function showSection(sectionId) {
   activeSection.classList.remove('hidden');
   activeSection.classList.add('active');
 }
+
+function showSection(sectionId) {
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(sec => {
+    sec.classList.remove('active');
+    sec.classList.add('hidden');
+  });
+  const activeSection = document.getElementById(sectionId);
+  activeSection.classList.remove('hidden');
+  activeSection.classList.add('active');
+  
+  // Cierra el menú hamburguesa al seleccionar una opción
+  const menu = document.getElementById('menu');
+  menu.classList.remove('active');
+}
+
+//----------------- CAMBIO DE SECCIONES ------------------ //
+//function showSection(sectionId) {
+  //const sections = document.querySelectorAll('.section');
+  //sections.forEach(sec => {
+    //sec.classList.remove('active');
+  //  //sec.classList.add('hidden');
+  //});
+  ////const activeSection = document.getElementById(sectionId);
+  //activeSection.classList.remove('hidden');
+  //activeSection.classList.add('active');
+//}//
 
 // ------------------ GESTIÓN DE TRANSACCIONES ------------------ //
 // Se guardarán todas las transacciones (ingresos, gastos y ahorros)
@@ -196,3 +228,13 @@ function cambiarIdioma() {
   const idioma = document.getElementById('idioma').value;
   console.log("Idioma seleccionado: ", idioma);
 }
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', function(event) {
+  const menu = document.getElementById('menu');
+  const hamburger = document.querySelector('.hamburger');
+  
+  if (!menu.contains(event.target) && event.target !== hamburger) {
+    menu.classList.remove('active');
+  }
+});
