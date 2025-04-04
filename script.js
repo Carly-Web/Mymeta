@@ -17,22 +17,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 
 // ------------------ CAMBIO DE SECCIONES ------------------ //
 function showSection(sectionId) {
-  function toggleMenu() {
-    const menu = document.getElementById("menu");
-    menu.classList.toggle("hidden");
-  
-    document.getElementById("menu").classList.add("hidden"); // Oculta el menú
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(sec => {
-      sec.classList.remove('active');
-      sec.classList.add('hidden');
-    });
-    const activeSection = document.getElementById(sectionId);
-    activeSection.classList.remove('hidden');
-    activeSection.classList.add('active'); // Muestra la sección activa
-  }
-  
-  document.getElementById("menu").classList.add("hidden");
   const sections = document.querySelectorAll('.section');
   sections.forEach(sec => {
     sec.classList.remove('active');

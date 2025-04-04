@@ -20,32 +20,20 @@
   </div>
 
   <!-- Contenido principal (oculto por defecto) -->
-<div id="appContent" class="app-content" style="display: none;">
-  <header>
-    <h1>Bienvenido a MyMeta$</h1>
-    <nav>
-      <button id="menu-btn" onclick="toggleMenu()">☰ Menu</button>
-      <ul id="menu" class="hidden">
-        <li><button onclick="showSection('balance')">Balance</button></li>
-        <li><button onclick="showSection('ingresos')">Ingresos</button></li>
-        <li><button onclick="showSection('gastos')">Gastos</button></li>
-        <li><button onclick="showSection('ahorros')">Ahorros</button></li>
-        <li><button onclick="showSection('simulacion')">Simulación</button></li>
-        <li><button onclick="showSection('cursos')">Cursos</button></li>
-        <li><button onclick="showSection('ajustes')">Ajustes</button></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <div id="balance" class="section hidden">Contenido de Balance</div>
-    <div id="ingresos" class="section hidden">Contenido de Ingresos</div>
-    <div id="gastos" class="section hidden">Contenido de Gastos</div>
-    <div id="ahorros" class="section hidden">Contenido de Ahorros</div>
-    <div id="simulacion" class="section hidden">Contenido de Simulación</div>
-    <div id="cursos" class="section hidden">Contenido de Cursos</div>
-    <div id="ajustes" class="section hidden">Contenido de Ajustes</div>
-  </main>
- 
+  <div id="appContent" class="app-content" style="display: none;">
+    <header>
+      <h1>Biemvenido a Cash Flow</h1>
+      <nav>
+        <button onclick="showSection('balance')">Balance</button>
+        <button onclick="showSection('ingresos')">Ingresos</button>
+        <button onclick="showSection('gastos')">Gastos</button>
+        <button onclick="showSection('ahorros')">Ahorros</button>
+        <button onclick="showSection('simulacion')">Simulación</button>
+        <button onclick="showSection('cursos')">Cursos</button>
+        <button onclick="showSection('ajustes')">Ajustes</button>
+      </nav>
+    </header>
+    <main>
       <!-- Sección Balance -->
       <section id="balance" class="section active">
         <h2>Balance General</h2>
