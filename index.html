@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de Cash Flow</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>MyMeta$</title>
+  <link rel="stylesheet" href="./styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 </head>
 <body>
   <!-- Pantalla de inicio de sesión -->
@@ -35,6 +38,7 @@
         <button onclick="showSection('ahorros')">Ahorros</button>
         <button onclick="showSection('simulacion')">Simulación</button>
         <button onclick="showSection('cursos')">Cursos</button>
+        <button onclick="showSection('perfil')">Perfil</button>
         <button onclick="showSection('ajustes')">Ajustes</button>
       </div>
     </nav>
@@ -130,12 +134,67 @@
   </div>
 </section>
 
+   <!-- Sección Perfil -->
+<section id="perfil" class="section hidden">
+  <div class="profile-container">
+    <div class="profile-header">
+      <img id="profileImage" src="https://via.placeholder.com/100" alt="Foto de perfil" class="profile-pic">
+      <input type="file" id="fileInput" accept="image/*">
+      <div class="profile-info">
+        <h2 id="usernameDisplay">Usuario</h2>
+        <p id="emailDisplay">usuario@example.com</p>
+      </div>
+    </div>
+
+    <!-- Información básica -->
+    <div class="sub-section">
+      <h3 class="section-title">Información básica</h3>
+      <div class="form-group">
+        <label for="profileUsername">Nombre de usuario</label>
+        <input type="text" id="profileUsername" value="Usuario">
+      </div>
+      <button id="saveUsername">Guardar cambios</button>
+    </div>
+
+    <!-- Seguridad -->
+    <div class="sub-section">
+      <h3 class="section-title">Seguridad</h3>
+      <div class="form-group">
+        <label for="currentPassword">Contraseña actual</label>
+        <input type="password" id="currentPassword">
+      </div>
+      <div class="form-group">
+        <label for="newPassword">Nueva contraseña</label>
+        <input type="password" id="newPassword">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar nueva contraseña</label>
+        <input type="password" id="confirmPassword">
+      </div>
+      <button id="changePassword">Cambiar contraseña</button>
+    </div>
+
+    <!-- Correo electrónico -->
+    <div class="sub-section">
+      <h3 class="section-title">Correo electrónico</h3>
+      <div class="form-group">
+        <label for="profileEmail">Correo electrónico actual</label>
+        <input type="email" id="profileEmail" value="usuario@example.com" disabled>
+      </div>
+      <div class="form-group">
+        <label for="newEmail">Nuevo correo electrónico</label>
+        <input type="email" id="newEmail">
+      </div>
+      <button id="changeEmail">Cambiar correo</button>
+    </div>
+  </div>
+</section>
+
 
       <!-- Sección Ajustes -->
       <section id="ajustes" class="section hidden">
         <h2>Ajustes</h2>
-        <label for="modo">Modo Oscuro:</label>
-        <input type="checkbox" id="modo" onclick="toggleDarkMode()">
+        <button id="toggleModoOscuro" onclick="toggleDarkMode()">🌙 Modo oscuro</button>
         <label for="idioma">Idioma:</label>
         <select id="idioma" onchange="cambiarIdioma()">
           <option value="es">Español</option>
